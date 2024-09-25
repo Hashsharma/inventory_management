@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "d97d36cd-d9c7-4c74-b5ca-4cf1600608c1",
+		"name": "Blooprint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17265903"
+	},
+	"item": [
+		{
+			"name": "All-Items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Access Token in Environment:\", pm.environment.get(\"access_token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjAyNDk1LCJpYXQiOjE3MjcyMDIxOTUsImp0aSI6ImUxYWI5YWRkZjFkOTRjZjA5OTZkNDA2NmUzNzUzY2ExIiwidXNlcl9pZCI6Mn0.OEfS3vQ1aXTb2GTzyi48q1okGqyJcfnW8Max9pfKBOU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 10,\n    \"name\": \"Anand\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/items/all",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "ana@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "anand123@",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "anan",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "sh",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/user/register/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"register",
+						""
+					],
+					"query": [
+						{
+							"key": "first_name",
+							"value": "anand",
+							"disabled": true
+						},
+						{
+							"key": "last_name",
+							"value": "sh",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "anan@gmail.com",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "anand123@",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"// Check if access and refresh tokens exist in the response",
+							"if (jsonData.access) {",
+							"    pm.environment.set(\"access_token\", jsonData.access);",
+							"    console.log(pm.environment.get(\"access_token\"));",
+							"",
+							"} else {",
+							"    console.error(\"Access token not found in response\");",
+							"}",
+							"",
+							"if (jsonData.refresh) {",
+							"    pm.environment.set(\"refresh_token\", jsonData.refresh);",
+							"} else {",
+							"    console.error(\"Refresh token not found in response\");",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "ana@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "anand123@",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/user/login/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add-Items",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjA3MTY4LCJpYXQiOjE3MjcyMDM1NjgsImp0aSI6IjBkMWMzNjg4ZjY3MDQ5MzM4OTYzODBkYTJhNmY2MGMxIiwidXNlcl9pZCI6Mn0.cu6xnCoIs1zvQ5hPykohGm619E7jQScWd2GrFY74iQc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Laptop Lenovo",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "product_quantity_in_stock",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "product_price",
+							"value": "100000",
+							"type": "text"
+						},
+						{
+							"key": "product_desc",
+							"value": "Laptop with i7",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/items/add",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FetchByItem",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjYxMTk1LCJpYXQiOjE3MjcyNTc1OTUsImp0aSI6ImYwNjIxNDJiMWFjODQ3YjhiNjQzN2FhOTMwNDVmMjZmIiwidXNlcl9pZCI6Mn0.knJHR-IXnQk_afF8qFizJYTgjNmD_T5vbnTmfVY6ZX4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "product_quantity_in_stock",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "product_price",
+							"value": "100000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/items/4",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put/Update Items",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjU4NjQxLCJpYXQiOjE3MjcyNTUwNDEsImp0aSI6IjYzNjQ5ZWJmZTcyMzRhNTQ4ZTA5MTQxMjk0OTg1NDgwIiwidXNlcl9pZCI6Mn0.peGHaIJB9tIIIUo3qwufI88YUmnkRA9h8DNWta5rci0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "product_quantity_in_stock",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "product_price",
+							"value": "100000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/items/1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Items",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjU4NjQxLCJpYXQiOjE3MjcyNTUwNDEsImp0aSI6IjYzNjQ5ZWJmZTcyMzRhNTQ4ZTA5MTQxMjk0OTg1NDgwIiwidXNlcl9pZCI6Mn0.peGHaIJB9tIIIUo3qwufI88YUmnkRA9h8DNWta5rci0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "product_quantity_in_stock",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "product_price",
+							"value": "100000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/items/4",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
