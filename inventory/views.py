@@ -57,6 +57,7 @@ def product_add(request):
             prod = Product.objects.filter(category_id=category_id, product_name=product_name).first()
             if not prod:
                 product = serializer.save(user=request.user)
+                cache.delete('products_list')
                 logger.info("Added products from database")
                 response_serializer = ProductSerializer(product)
 
@@ -99,6 +100,7 @@ def product_detail(request, product_id):
             if serializer.is_valid():
                 serializer.save()
                 cache.delete(cache_name)
+                cache.delete('product_list')
                 logger.info("Updating products from database")
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -106,6 +108,7 @@ def product_detail(request, product_id):
         elif request.method == 'DELETE':
             prod = product.delete()
             cache.delete(cache_name)
+            cache.delete('product_list')
             logger.info("Deleting products from database")
             return Response({'result': 'Product deleted successfully.'}, status=status.HTTP_200_OK)
 
