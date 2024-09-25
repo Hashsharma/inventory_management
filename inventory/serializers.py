@@ -4,8 +4,8 @@ from .models import Product, Order
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['product_name', 'category', 'product_quantity_in_stock', 'product_price']
-        read_only_fields = ['id']
+        fields = ['id', 'product_name', 'category', 'product_quantity_in_stock', 'product_price', 'product_desc']
+        read_only_fields = ['id']  # Keep id as read-only
 
 
 class OrderSerializer(serializers.ModelSerializer):

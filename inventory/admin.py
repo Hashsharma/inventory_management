@@ -15,7 +15,7 @@ from inventory.models import Product, Category
 #
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['product_name', 'category', 'product_quantity_in_stock', 'product_price']
+    list_display = ['product_name', 'product_desc', 'category', 'product_quantity_in_stock', 'product_price']
     list_filter = ['product_name']
 
 admin.site.register(Product, ProductAdmin)

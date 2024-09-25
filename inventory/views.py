@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 
 
 # Product CRUD Operations
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def product_list(request):
     try:
@@ -17,12 +17,39 @@ def product_list(request):
             serializer = ProductSerializer(products, many=True)
             return Response(serializer.data)
 
-        elif request.method == 'POST':
-            serializer = ProductSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # elif request.method == 'POST':
+        #     serializer = ProductSerializer(data=request.data)
+        #     if serializer.is_valid():
+        #         serializer.save()
+        #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+# Product CRUD Operations
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def product_add(request):
+    try:
+
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            category_id = request.data.get('category')
+            product_name = request.data.get('product_name')
+            prod = Product.objects.filter(category_id=category_id, product_name=product_name).first()
+            if not prod:
+                product = serializer.save(user=request.user)
+                response_serializer = ProductSerializer(product)
+
+                return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+            else:
+                return Response({'error': 'Product already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -30,9 +57,9 @@ def product_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def product_detail(request, pk):
+def product_detail(request, product_id):
     try:
-        product = get_object_or_404(Product, pk=pk)
+        product = get_object_or_404(Product, pk=product_id)
 
         if request.method == 'GET':
             serializer = ProductSerializer(product)
