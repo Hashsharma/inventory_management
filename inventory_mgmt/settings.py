@@ -24,9 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-reg8q!%63y@$(io!=vb14$bn13t57j4x18&!*e!@##1b4#1_+d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+import os
 
 
 # Application definition
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'inventory_mgmt.urls'
@@ -86,19 +89,19 @@ WSGI_APPLICATION = 'inventory_mgmt.wsgi.application'
 
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': str(BASE_DIR / 'db.sqlite3'),
-    # }
-
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'inventory_mgmt',
-        'USER': 'rootanand',
-        'PASSWORD': 'rootanand',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'inventory_mgmt',
+    #     'USER': 'rootanand',
+    #     'PASSWORD': 'rootanand',
+    #     'HOST': '172.17.0.3',
+    #     'PORT': '5432',
+    # }
 }
 
 
@@ -130,6 +133,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# settings.py
+
+# STATIC_URL = '/static/'
+#
+# # During development, set this to the directory where static files are collected
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Adjust BASE_DIR as needed
 
 
 # Internationalization
@@ -196,7 +206,14 @@ CACHES = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Change to 'staticfiles' for better practice
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Adjust if necessary
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
