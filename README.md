@@ -26,7 +26,7 @@ The Inventory Management System is designed to help businesses efficiently manag
    git clone https://github.com/yourusername/inventory-management.git
    cd inventory-management
    ```
-#### Use Docker Insted
+#### Use Docker Instead
 ## Build the Docker Image
 
 To build the Docker image, run the following command in the project root directory:
