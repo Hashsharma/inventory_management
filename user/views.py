@@ -24,7 +24,7 @@ def register(request):
         serializer.save()
         user_data = serializer.data.copy()
         user_data.pop('password')  # Remove the password
-        return Response(user_data, status=status.HTTP_201_CREATED)
+        return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -38,26 +38,26 @@ def login(request):
         email = request.data.get('email', '')
 
         if not email:
-            return Response({'error': 'Please provide a valid username or email'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Please provide a valid username or email'}, status=status.HTTP_401_UNAUTHORIZED)
 
         user = User.objects.filter(email=email).first()
         if user:
             username = user.username
         else:
-            return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'User does not exist'}, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
     # Check password
     if not user.check_password(password):
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
     # Generate JWT tokens
     refresh = RefreshToken.for_user(user)
     return Response({
         'refresh': str(refresh),
-        'access': str(refresh.access_token),
-    })
+        'token': str(refresh.access_token),
+    }, status=status.HTTP_200_OK)

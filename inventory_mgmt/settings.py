@@ -133,6 +133,55 @@ USE_I18N = True
 
 USE_TZ = True
 
+# settings.py
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'your_app_name': {  # Replace with your app name
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
+
+# settings.py
+
+# REDIS_HOST = '127.0.0.1'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
+
+CACHE_TTL = 60 * 60 * 24 * 3                                                    # 3 Days Calculation
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        'LOCATION': 'redis://127.0.0.1:6379/',                                # LOCAL CONFIG
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "im"
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
